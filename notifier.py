@@ -8,9 +8,9 @@ observations, and sends an alert when:
   - the price just dropped by more than PRICE_DROP_THRESHOLD_PCT.
 
 Ships wired up for a Discord webhook because it's the fastest free option to
-set up (Server Settings â Integrations â Webhooks â copy URL). Swap
+set up (Server Settings → Integrations → Webhooks → copy URL). Swap
 `send_discord_alert` for an email provider (Resend/Postmark/SendGrid) or a
-push service once you have real subscribers â see DEPLOYMENT.md.
+push service once you have real subscribers — see DEPLOYMENT.md.
 
 Dedup: alerts_sent stores one row per (listing_key, trigger) so the same
 event doesn't fire twice.
@@ -57,7 +57,7 @@ def mark_sent(conn, listing_key: str, trigger: str):
 
 def send_discord_alert(message: str):
     if not DISCORD_WEBHOOK_URL:
-        log.warning("No DISCORD_WEBHOOK_URL set â logging instead of sending: %s", message)
+        log.warning("No DISCORD_WEBHOOK_URL set — logging instead of sending: %s", message)
         return
     try:
         requests.post(DISCORD_WEBHOOK_URL, json={"content": message}, timeout=10)
@@ -75,7 +75,7 @@ def find_changes(conn):
             (key,),
         ).fetchall()
         if len(rows) < 2:
-            continue  # first time we've seen this listing â nothing to compare against
+            continue  # first time we've seen this listing — nothing to compare against
 
         latest, previous = rows[0], rows[1]
         label = f"{latest['set_name']} ({latest['product']}) @ {latest['retailer']}"
@@ -91,13 +91,13 @@ def find_changes(conn):
         shipping = current["shipping"] if current else 0
         purchase_url = current["url"] if current else None
         signal, reason = buy_signal(latest["price"], shipping, msrp, latest["status"])
-        circle = {"green": "ð¢", "yellow": "ð¡", "red": "ð´"}[signal]
-        # Plain URL on its own line â Discord auto-links raw URLs in webhook
+        circle = {"green": "🟢", "yellow": "🟡", "red": "🔴"}[signal]
+        # Plain URL on its own line — Discord auto-links raw URLs in webhook
         # messages, so this becomes a clickable "go buy it" link with no extra work.
-        link_line = f"\nð {purchase_url}" if purchase_url else ""
+        link_line = f"\n🔗 {purchase_url}" if purchase_url else ""
 
         if latest["status"] == "preorder_open" and previous["status"] != "preorder_open":
-            yield key, "preorder_open", f"{circle} Preorder just opened: **{label}** â ${latest['price']:.2f}\n_{reason}_{link_line}"
+            yield key, "preorder_open", f"{circle} Preorder just opened: **{label}** — ${latest['price']:.2f}\n_{reason}_{link_line}"
 
         if previous["price"] > 0:
             drop_pct = (previous["price"] - latest["price"]) / previous["price"] * 100
@@ -105,7 +105,7 @@ def find_changes(conn):
                 yield (
                     key,
                     "price_drop",
-                    f"{circle} Price drop: **{label}** â ${previous['price']:.2f} â ${latest['price']:.2f} ({drop_pct:.0f}% off)\n_{reason}_{link_line}",
+                    f"{circle} Price drop: **{label}** — ${previous['price']:.2f} → ${latest['price']:.2f} ({drop_pct:.0f}% off)\n_{reason}_{link_line}",
                 )
 
 
