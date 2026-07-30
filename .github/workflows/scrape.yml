@@ -1,5 +1,8 @@
 name: PackWatch scraper
 
+permissions:
+  contents: write
+
 on:
   schedule:
     # Runs every 30 minutes. GitHub's scheduler is best-effort and can lag
