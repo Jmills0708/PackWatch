@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-07-30T23:33:25.685040+00:00",
+  "count": 3,
+  "deals": [
+    {
+      "id": 1,
+      "game": "One Piece",
+      "set_name": "OP-17 The Four Emperors",
+      "product": "Booster Box (24 packs)",
+      "retailer": "Gamers Guild AZ",
+      "price": 104.99,
+      "shipping": 0.0,
+      "msrp": 119.76,
+      "url": "",
+      "status": "preorder_open",
+      "release_date": "2026-08-26",
+      "fetched_at": "2026-07-30T23:33:23.628792+00:00",
+      "deal_pct": 12
+    },
+    {
+      "id": 2,
+      "game": "Pok\u00e9mon",
+      "set_name": "Storm Emerald (JP)",
+      "product": "Booster Box",
+      "retailer": "TCGPlayer",
+      "price": 84.0,
+      "shipping": 0.0,
+      "msrp": 99.99,
+      "url": "",
+      "status": "preorder_open",
+      "release_date": "2026-08-07",
+      "fetched_at": "2026-07-30T23:33:23.628792+00:00",
+      "deal_pct": 16
+    },
+    {
+      "id": 3,
+      "game": "Union Arena",
+      "set_name": "InuYasha [UA50BT]",
+      "product": "Booster Box",
+      "retailer": "N4YTCG",
+      "price": 74.99,
+      "shipping": 0.0,
+      "msrp": 79.99,
+      "url": "",
+      "status": "preorder_open",
+      "release_date": "2026-08-14",
+      "fetched_at": "2026-07-30T23:33:23.628792+00:00",
+      "deal_pct": 6
+    }
+  ]
+}
