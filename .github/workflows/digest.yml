@@ -1,0 +1,28 @@
+name: PackWatch daily digest
+
+on:
+  schedule:
+    # 13:00 UTC ≈ 9am US Eastern / 6am US Pacific — adjust to your timezone.
+    - cron: "0 13 * * *"
+  workflow_dispatch: {} # lets you trigger it manually to test
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # Checks out the repo including whatever packwatch.db the scraper
+        # workflow most recently committed, so the digest reflects current data.
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send daily digest
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PACKWATCH_DB: packwatch.db
+        run: python digest.py
